@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Scanner;
 
 namespace CraftingInterpreters.Lox
 {
@@ -42,7 +43,14 @@ namespace CraftingInterpreters.Lox
 
         private static void Run(string source)
         {
-            Console.WriteLine("Source: " + source);
+            Scanner scanner = new Scanner(new StreamReader(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(source))));
+            List<Token> tokens = scanner.ScanTokens();
+
+            // For now, just print the tokens.
+            foreach (Token token in tokens)
+            {
+                Console.WriteLine(token);
+            }
         }
 
         static void Error(int line, string message)
@@ -52,7 +60,7 @@ namespace CraftingInterpreters.Lox
 
         private static void Report(int line, string where, string message) {
             Console.Error.WriteLine("[line " + line + "] Error" + where + ": " + message);
-            hadError = true;
+            //hadError = true;
         }
     }
 }

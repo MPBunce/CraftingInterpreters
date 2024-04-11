@@ -1,0 +1,8 @@
+# Ignore everything
+/*
+
+# Unignore the .vscode directory and specific files
+
+!LoxCSharp.csproj
+!Program.cs
+!.gitignore
