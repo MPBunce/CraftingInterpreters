@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using static CraftingInterpreters.Lox.Scanner;
-
-namespace CraftingInterpreters.Lox
+﻿namespace CraftingInterpreters.Lox
 {
     public class Lox
     {
@@ -46,11 +41,11 @@ namespace CraftingInterpreters.Lox
 
         private static void Run(string source)
         {
-            Scanner scanner = new Scanner(new StreamReader(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(source))));
-            List<ParseToken> tokens = scanner.ScanTokens();
-
+            Scanner scanner = new Scanner(source);
+            List<Token> tokens = scanner.scanTokens();
+            
             // For now, just print the tokens.
-            foreach (ParseToken token in tokens)
+            foreach (Token token in tokens)
             {
                 Console.WriteLine(token);
             }
