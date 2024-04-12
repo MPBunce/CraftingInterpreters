@@ -47,10 +47,10 @@ namespace CraftingInterpreters.Lox
         private static void Run(string source)
         {
             Scanner scanner = new Scanner(new StreamReader(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(source))));
-            List<Token> tokens = scanner.ScanTokens();
+            List<ParseToken> tokens = scanner.ScanTokens();
 
             // For now, just print the tokens.
-            foreach (Token token in tokens)
+            foreach (ParseToken token in tokens)
             {
                 Console.WriteLine(token);
             }

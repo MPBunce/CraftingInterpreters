@@ -4,11 +4,11 @@ using System.IO;
 
 namespace CraftingInterpreters.Lox
 {
-    public class Token
+    public class ParseToken
     {
         public string Value { get; set; }
 
-        public Token(string value)
+        public ParseToken(string value)
         {
             Value = value;
         }
@@ -28,9 +28,9 @@ namespace CraftingInterpreters.Lox
             _reader = reader;
         }
 
-        public List<Token> ScanTokens()
+        public List<ParseToken> ScanTokens()
         {
-            List<Token> tokens = new List<Token>();
+            List<ParseToken> tokens = new List<ParseToken>();
             string line;
             while ((line = _reader.ReadLine()) != null)
             {
@@ -38,7 +38,7 @@ namespace CraftingInterpreters.Lox
                 string[] words = line.Split(' ');
                 foreach (string word in words)
                 {
-                    tokens.Add(new Token(word));
+                    tokens.Add(new ParseToken(word));
                 }
             }
             return tokens;
