@@ -1,0 +1,7 @@
+# Ignore everything
+/*
+
+# Unignore the .vscode directory and specific files
+!GenerateAst.cs
+!GenerateAst.csproj
+!.gitignore
