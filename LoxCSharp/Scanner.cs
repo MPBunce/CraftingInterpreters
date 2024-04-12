@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace CraftingInterpreters.Lox
 {
 
@@ -5,14 +7,38 @@ namespace CraftingInterpreters.Lox
     {
         private readonly string source;
         private readonly List<Token> tokens = new List<Token>();
+        private readonly Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType>();
+
+        
         private int start = 0;
         private int current = 0;
         private int line = 1;
 
         public Scanner (String source) {
             this.source = source;
+            keywords = new Dictionary<string, TokenType>
+            {
+                { "and", TokenType.AND },
+                { "class", TokenType.CLASS },
+                { "else", TokenType.ELSE },
+                { "flase", TokenType.FALSE },
+                { "for", TokenType.FOR },
+                { "fun", TokenType.FUN },
+                { "if", TokenType.IF },
+                { "nil", TokenType.NIL },
+                { "or", TokenType.OR },
+                { "print", TokenType.PRINT },
+                { "return", TokenType.RETURN },
+                { "super", TokenType.SUPER },
+                { "this", TokenType.THIS },
+                { "true", TokenType.TRUE },
+                { "var", TokenType.VAR },
+                { "while", TokenType.WHILE },
+            };
         }
         
+ 
+
         public List<Token> scanTokens() {
             while( !isAtEnd() ){
                 start = current;
@@ -83,14 +109,89 @@ namespace CraftingInterpreters.Lox
                 case '\t':
                     // Ignore whitespace.
                     break;
-
                 case '\n':
                     line++;
                     break;
+                case '"':
+                    str();
+                    break;
+                case 'o':
+                    if (match('r')) {
+                        addToken(TokenType.OR);
+                    }
+                    break;
                 default:
-                    Lox.Error(line, "Unexpected character.");
+                    if (isDigit(c)) {
+                        number();
+                    } else if (isAlpha(c)) {
+                        identifier();
+                    } else {
+                        Lox.Error(line, "Unexpected character.");
+                    }
                     break;
             }
+        }
+
+
+        private void identifier() {
+            while (isAlphaNumeric(peek())) advance();
+            String text = source.Substring(start, current);
+            TokenType type = keywords[text];
+            if (type == null) {
+               type = TokenType.IDENTIFIER; 
+            } 
+            addToken(type);
+        }
+        private bool isAlpha(char c) {
+            return (c >= 'a' && c <= 'z') ||
+                (c >= 'A' && c <= 'Z') ||
+                    c == '_';
+        }
+
+        private bool isAlphaNumeric(char c) {
+            return isAlpha(c) || isDigit(c);
+        }
+
+
+        private void number(){
+            while(isDigit(peek())){
+                advance();
+            }
+        
+            if( peek() == '.' && isDigit( peekNext() ) ){
+                advance();
+                while(isDigit(peek())){
+                    advance();
+                }
+            }
+
+            addToken(TokenType.NUMBER, Double.Parse(source.Substring(start, current)));
+        }
+
+        private char peekNext(){
+            if( current+1 >= source.Length){
+                return '\0';
+            } 
+            return source[current+1];
+        }
+
+        private bool isDigit(char c) {
+            return c >= '0' && c <= '9';
+        } 
+
+        private void str() {
+            while( peek() != '"' && !isAtEnd() ){
+                if( peek() == '\n' ){
+                    line++;
+                }
+            }
+            if( isAtEnd() ){
+                Lox.Error(line, "Unterminated string");
+                return;
+            }
+            advance();
+            string value = source.Substring(start + 1, current - 1);
+            addToken(TokenType.STRING, value);
         }
 
         private bool match(char expected){
