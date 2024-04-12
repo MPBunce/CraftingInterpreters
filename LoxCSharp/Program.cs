@@ -43,7 +43,6 @@
         {
             Scanner scanner = new Scanner(source);
             List<Token> tokens = scanner.scanTokens();
-            
             // For now, just print the tokens.
             foreach (Token token in tokens)
             {
@@ -51,7 +50,7 @@
             }
         }
 
-        static void Error(int line, string message)
+        public static void Error(int line, string message)
         {
             Report(line, "", message);
         }

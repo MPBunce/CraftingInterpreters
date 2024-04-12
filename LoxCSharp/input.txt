@@ -1,3 +1,3 @@
-testing input
-this is a lox file
-var language = "lox";
+// this is a comment
+(( )){} // grouping stuff
+!*+-/=<> <= == // operators
