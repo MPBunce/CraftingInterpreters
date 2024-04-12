@@ -4,16 +4,19 @@ namespace CraftingInterpreters.Lox
     {
         public class Binary : Expr
         {
-            public Binary(Expr left, Token @operator, Expr right)
-            {
-                this.Left = left;
-                this.Operator = @operator;
-                this.Right = right;
-            }
 
             public Expr Left { get; }
             public Token Operator { get; }
             public Expr Right { get; }
+            
+            public Binary(Expr left, Token opperation, Expr right)
+            {
+                this.Left = left;
+                this.Operator = opperation;
+                this.Right = right;
+            }
+
+
         }
 
         

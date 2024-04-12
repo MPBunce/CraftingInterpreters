@@ -10,3 +10,4 @@
 !TokenType.cs
 !Token.cs
 !Expr.cs
+!GenerateAst.cs
