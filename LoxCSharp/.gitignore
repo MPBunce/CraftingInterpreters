@@ -3,6 +3,8 @@
 
 # Unignore the .vscode directory and specific files
 !input.txt
+!.gitignore
 !LoxCSharp.csproj
 !Program.cs
-!.gitignore
+!Scanner.cs
+!TokenType.cs

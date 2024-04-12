@@ -29,6 +29,7 @@ namespace CraftingInterpreters.Lox
         {
             var bytes = File.ReadAllBytes(path);
             Run(System.Text.Encoding.UTF8.GetString(bytes));
+            if (hadError) Environment.Exit(65);
         }
 
         private static void RunPrompt()
@@ -39,6 +40,7 @@ namespace CraftingInterpreters.Lox
                 var line = Console.ReadLine();
                 if (line == null) break;
                 Run(line);
+                hadError = false;
             }
         }
 
