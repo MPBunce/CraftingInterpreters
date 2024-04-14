@@ -9,7 +9,7 @@ namespace CraftingInterpreters.Lox
         {
             if (args.Length > 1)
             {
-                Console.WriteLine("Usage: jlox [script]");
+                Console.WriteLine("Usage: C#-lox [script]");
                 Environment.Exit(64);
             }
             else if (args.Length == 1)
