@@ -44,7 +44,7 @@ namespace CraftingInterpreters.Lox
         private static void Run(string source)
         {
 
-
+            Console.WriteLine(source);
 
         }
 
