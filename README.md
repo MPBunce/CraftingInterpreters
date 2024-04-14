@@ -1,2 +1,11 @@
 # CraftingInterpreters
-Following along https://craftinginterpreters.com/contents.html but instead of using Java and C I opted to use C# and Rust
+
+
+Following along the Crafting Interpreters book to develop a Lox Compiler, but instead of using Java I opted to use C#.
+After the second implmentation in C. I also decided to rewrtie the second implementation in Rust. 
+
+
+Books: https://craftinginterpreters.com/contents.html
+
+Repository: https://github.com/munificent/craftinginterpreters/tree/master
+
