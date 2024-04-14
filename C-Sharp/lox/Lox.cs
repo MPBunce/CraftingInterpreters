@@ -1,4 +1,6 @@
-﻿namespace CraftingInterpreters.Lox
+﻿using System.Runtime.CompilerServices;
+
+namespace CraftingInterpreters.Lox
 {
     public class Lox
     {
@@ -41,18 +43,23 @@
 
         private static void Run(string source)
         {
-            Scanner scanner = new Scanner(source);
-            List<Token> tokens = scanner.scanTokens();
-            // For now, just print the tokens.
-            foreach (Token token in tokens)
-            {
-                Console.WriteLine(token);
-            }
+
+
+
         }
 
-        public static void Error(int line, string message)
+        public static void LineError(int line, string message)
         {
             Report(line, "", message);
+        }
+
+        public static void TokenError(Token token, string message)
+        {
+            if (token.Type == TokenType.EOF) {
+                Report(token.Line, " at end", message);
+            } else {
+                Report(token.Line, " at '" + token.Lexeme + "'", message);
+            }
         }
 
         private static void Report(int line, string where, string message) {
