@@ -10,10 +10,10 @@ namespace GenerateAst
 
             DefineAst(outputDir, "Expr", new List<string>
             {
-                "Binary   : Expr Left, Token Operator, Expr Right",
+                "Binary   : Expr Left, Token Operation, Expr Right",
                 "Grouping : Expr Expression",
                 "Literal  : object Value",
-                "Unary    : Token Operator, Expr Right"
+                "Unary    : Token Operation, Expr Right"
             });
         }
 
@@ -30,10 +30,81 @@ namespace GenerateAst
                 writer.WriteLine($"    public abstract class {baseName}");
                 writer.WriteLine("    {");
 
+                defineVisitor(writer, baseName, types);
+
+                foreach (string type in types)
+                {
+                    string[] parts = type.Split(':');
+                    string className = parts[0].Trim();
+                    string fields = parts[1].Trim();
+                    defineType(writer, baseName, className, fields);
+                }
+
+
+
+                writer.WriteLine();
+                writer.WriteLine("    public abstract R Accept<R>(Visitor<R> visitor);");
+
+
                 writer.WriteLine("    }");
                 writer.WriteLine("}");
+
+                writer.Close();
             }
+
         }
+
+        private static void defineVisitor(StreamWriter writer, string baseName, List<string> types)
+        {
+            writer.WriteLine("public interface Visitor<R> {");
+
+            foreach (string type in types)
+            {
+                String typeName = type.Split(":")[0].Trim();
+                writer.WriteLine("    R Visit" + typeName + baseName + "(" + typeName + " " + baseName.ToLower() + ");");
+            }
+
+            writer.WriteLine("  }");
+        }
+
+        private static void defineType(StreamWriter writer, string baseName, string className, string fieldList)
+        {
+            writer.WriteLine($"       public class {className} : {baseName}");
+            writer.WriteLine("       {");
+
+            // Constructor.
+            writer.WriteLine($"         public {className}({fieldList})");
+            writer.WriteLine("         {");
+
+            // Store parameters in fields.
+            string[] fields = fieldList.Split(", ");
+            foreach (string field in fields)
+            {
+                string name = field.Split(' ')[1];
+                writer.WriteLine($"           this.{name} = {name};");
+            }
+
+            writer.WriteLine("          }");
+
+            writer.WriteLine();
+            writer.WriteLine("    public override R Accept<R>(Visitor<R> visitor)");
+            writer.WriteLine("    {");
+            writer.WriteLine($"        return visitor.Visit{className}{baseName}(this);");
+            writer.WriteLine("    }");
+
+
+
+            // Fields.
+            writer.WriteLine();
+            foreach (string field in fields)
+            {
+                writer.WriteLine($"         public readonly {field};");
+            }
+
+            writer.WriteLine("        }");
+        }
+
+
 
     }
 
