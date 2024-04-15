@@ -44,16 +44,20 @@ namespace CraftingInterpreters.Lox
         private static void Run(string source)
         {
 
-            Console.WriteLine(source);
+            Scanner scanner = new Scanner(source);
+            List<Token> tokens = scanner.ScanTokens();
+            foreach(Token token in tokens){
+                Console.WriteLine(token);
+            }
 
         }
 
-        public static void LineError(int line, string message)
+        public static void Error(int line, string message)
         {
             Report(line, "", message);
         }
 
-        public static void TokenError(Token token, string message)
+        public static void Error(Token token, string message)
         {
             if (token.Type == TokenType.EOF) {
                 Report(token.Line, " at end", message);

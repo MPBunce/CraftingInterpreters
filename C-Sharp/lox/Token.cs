@@ -3,8 +3,8 @@ namespace CraftingInterpreters.Lox
     public class Token
     {
         public TokenType Type { get; }
-        public string? Lexeme { get; }
-        public object? Literal { get; }
+        public string Lexeme { get; }
+        public Object? Literal { get; }
         public int Line { get; }
 
         public Token(TokenType type, string lexeme, object literal, int line)
