@@ -3,7 +3,7 @@
 
 # Unignore the .vscode directory and specific files
 !tools
-!input.txt
+!Test.lox
 !.gitignore
 !Lox.csproj
 !Lox.cs

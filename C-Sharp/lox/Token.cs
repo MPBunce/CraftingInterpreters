@@ -4,7 +4,7 @@ namespace CraftingInterpreters.Lox
     {
         public TokenType Type { get; }
         public string Lexeme { get; }
-        public Object? Literal { get; }
+        public Object? Literal { get; set; }
         public int Line { get; }
 
         public Token(TokenType type, string lexeme, object literal, int line)

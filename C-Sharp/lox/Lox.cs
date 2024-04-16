@@ -43,11 +43,12 @@ namespace CraftingInterpreters.Lox
 
         private static void Run(string source)
         {
-
+            Console.WriteLine("Running: \n");
             Scanner scanner = new Scanner(source);
             List<Token> tokens = scanner.ScanTokens();
             foreach(Token token in tokens){
                 Console.WriteLine(token);
+                
             }
 
         }

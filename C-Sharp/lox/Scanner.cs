@@ -88,7 +88,7 @@ namespace CraftingInterpreters.Lox{
                     break;  
                 case '/':
                     if (Match('/')){
-                        while(Peek() != '\n' && IsAtEnd()){
+                        while(Peek() != '\n' && !IsAtEnd()){
                             Advance();
                         }
                     }else{
@@ -129,9 +129,12 @@ namespace CraftingInterpreters.Lox{
                 Advance();
             }
 
-            String text = source[start..current];
-            TokenType type = keywords[text];
-            if(type == null){
+            TokenType type;
+            string text = source[start..current];
+            
+            if(keywords.ContainsKey(text)){
+                type = keywords[text];
+            }else{
                 type = TokenType.IDENTIFIER;
             }
             addToken(type);
@@ -145,7 +148,7 @@ namespace CraftingInterpreters.Lox{
         }
 
         void Number(){
-            while(IsDigit(Peek())){
+            while( IsDigit(Peek()) ){
                 Advance();
             }
             if( Peek() == '.' && IsDigit(PeekNext()) ){
@@ -161,9 +164,10 @@ namespace CraftingInterpreters.Lox{
             while( Peek() != '"' && !IsAtEnd()){
                 if( Peek() == '\n'){
                     line++;
-                    Advance();
                 }
+                Advance();
             }
+            //Console.WriteLine("loop");
             if( IsAtEnd() ){
                 Lox.Error(line, "Unterminated string.");
                 return;
@@ -171,6 +175,7 @@ namespace CraftingInterpreters.Lox{
             Advance();
 
             String value = source[(start+1)..(current-1)];
+            //Console.WriteLine("string val:" + value);
             addToken(TokenType.STRING, value);
         }
 
@@ -186,6 +191,7 @@ namespace CraftingInterpreters.Lox{
         }
         
         char Peek(){
+
             if(IsAtEnd()){
                 return '\0';
             }
