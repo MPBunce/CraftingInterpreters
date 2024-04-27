@@ -32,6 +32,8 @@ namespace GenerateAst
                 writer.WriteLine();
                 writer.WriteLine($"  public class {baseName} {{");
                 writer.WriteLine();
+                
+                writer.WriteLine();
                 writer.WriteLine("  }");
                 writer.WriteLine();
                 writer.WriteLine("}");
