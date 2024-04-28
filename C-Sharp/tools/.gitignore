@@ -3,5 +3,6 @@
 
 # Unignore the .vscode directory and specific files
 !GenerateAst.cs
+!Expr.cs
 !GenerateAst.csproj
 !.gitignore
