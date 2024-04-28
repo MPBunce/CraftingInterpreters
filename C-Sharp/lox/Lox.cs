@@ -46,10 +46,14 @@ namespace CraftingInterpreters.Lox
             Console.WriteLine("Running: \n");
             Scanner scanner = new Scanner(source);
             List<Token> tokens = scanner.ScanTokens();
-            foreach(Token token in tokens){
-                Console.WriteLine(token);
-                
-            }
+
+            Parser parser = new Parser(tokens);
+            Expr expression = parser.parse();
+
+            // Stop if there was a syntax error.
+            if (hadError) return;
+
+            Console.WriteLine( new AstPrinter().print(expression) );
 
         }
 

@@ -12,3 +12,5 @@
 !Token.cs
 !Expr.cs
 !GenerateAst.cs
+!Parser.cs
+!AstPrinter.cs

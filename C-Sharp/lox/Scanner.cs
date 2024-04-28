@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 namespace CraftingInterpreters.Lox{
 
     public class Scanner {
