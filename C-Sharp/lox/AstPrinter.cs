@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace CraftingInterpreters.Lox{
+namespace CraftingInterpreters.Lox {
 
     public class AstPrinter : Expr.IVisitor<string>  {
 
