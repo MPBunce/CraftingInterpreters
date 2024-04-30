@@ -4,7 +4,9 @@ namespace CraftingInterpreters.Lox
 {
     public class Lox
     {
+        private static readonly Interpreter interpreter = new Interpreter();
         static bool hadError = false;
+        static bool hadRuntimeError = false;
         public static void Main(string[] args)
         {
             if (args.Length > 1)
@@ -26,7 +28,12 @@ namespace CraftingInterpreters.Lox
         {
             var bytes = File.ReadAllBytes(path);
             Run(System.Text.Encoding.UTF8.GetString(bytes));
-            if (hadError) Environment.Exit(65);
+            if (hadError){
+                Environment.Exit(65);
+            }
+            if (hadRuntimeError){
+                Environment.Exit(70);
+            } 
         }
 
         private static void RunPrompt()
@@ -53,8 +60,8 @@ namespace CraftingInterpreters.Lox
             // Stop if there was a syntax error.
             if (hadError) return;
 
-            Console.WriteLine( new AstPrinter().print(expression) );
-
+            //Console.WriteLine( new AstPrinter().print(expression) );
+            interpreter.interpret(expression);
         }
 
         public static void Error(int line, string message)
@@ -75,5 +82,10 @@ namespace CraftingInterpreters.Lox
             Console.Error.WriteLine("[line " + line + "] Error" + where + ": " + message);
             hadError = true;
         }
+
+        public static void RuntimeError(RuntimeError error){
+            Console.Error.WriteLine(error.Message + $"\n[line {error.token.Line}]");
+            hadRuntimeError = true;
+        } 
     }
 }
