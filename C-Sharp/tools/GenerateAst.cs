@@ -18,9 +18,17 @@ namespace GenerateAst
                 "Literal  : object Value",
                 "Unary    : Token Operation, Expr Right"
             };
-
-
             DefineAst(OutputDir, "Expr", MyList);
+
+
+            List<string> StmtList = new List<string>
+            {
+                "Expression : Expr expression",
+                "Print      : Expr expression"
+            };
+
+
+            DefineAst(OutputDir, "Stmt", StmtList);
         }
 
         private static void DefineAst(string outputDir, string baseName, List<string> types){
