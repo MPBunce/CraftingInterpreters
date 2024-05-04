@@ -29,6 +29,25 @@ namespace CraftingInterpreters.Lox{
             return Equality();
         }
 
+        private Stmt Statement(){
+            if( Match(TokenType.PRINT) ){
+                return PrintStatement();
+            }
+            return ExpressionStatement();
+        }
+
+        private Stmt PrintStatement(){
+            Expr value = Expression();
+            Consume(TokenType.SEMICOLON,  "Expect ';' after expression." );
+            return new Stmt.Print(value);
+        }
+
+        private Stmt ExpressionStatement(){
+            Expr expr = Expression();
+            Consume(TokenType.SEMICOLON,  "Expect ';' after expression." );
+            return new Stmt.Expression(expr);           
+        }
+
         private Expr Equality()
         {
             Expr expr = Compare();
