@@ -1,20 +1,35 @@
 namespace CraftingInterpreters.Lox {
 
-    class Interpreter : Expr.IVisitor<Object> {
+    class Interpreter : Expr.IVisitor<Object>, Stmt.IVisitor<Object> {
 
-        public void interpret(Expr expression){
+        public void interpret(List<Stmt> statements){
             try {
-                Object value = Evaluate(expression);
-                Console.WriteLine( stringify(value) );
+                foreach(Stmt statement in statements){
+                    Console.WriteLine(statement);
+                } 
             } catch (RuntimeError error){
                 Lox.RuntimeError(error);
             }
+        }
+
+        public Object VisitExpressionStmt(Stmt.Expression stmt){
+            Evaluate(stmt.expression);
+            return null;
+        }
+
+        public Object VisitPrintStmt(Stmt.Print stmt){
+            Object value = Evaluate(stmt.expression);
+            Console.WriteLine(stringify(value));
+            return null;
         }
 
         public Object VisitLiteralExpr(Expr.Literal expr) 
         {
             return expr.Value;
         }
+
+        
+
         public Object VisitGroupingExpr(Expr.Grouping expr) 
         {
             return Evaluate(expr.Expression);
@@ -86,6 +101,10 @@ namespace CraftingInterpreters.Lox {
             return expr.Accept(this);
         }
         
+        private void Execute(Stmt stmt){
+            stmt.Accept(this);
+        }
+
         private bool isTruthy(Object obj)
         {
             if (obj == null) return false;

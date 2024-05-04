@@ -16,17 +16,17 @@ namespace CraftingInterpreters.Lox{
             this.tokens = tokens;
         }
 
-        public Expr parse() {
-            try {
-                return Expression();
-            } catch (ParseError error) {
-                return null;
+        public List<Stmt> parse() {
+            List<Stmt> statements = new List<Stmt>();
+            while( !isAtEnd() ){
+                statements.Add(Statement());
             }
+            return statements;
         }
 
         private Expr Expression()
         {
-            return Equality();
+            return Assignment();
         }
 
         private Stmt Statement(){
@@ -46,6 +46,19 @@ namespace CraftingInterpreters.Lox{
             Expr expr = Expression();
             Consume(TokenType.SEMICOLON,  "Expect ';' after expression." );
             return new Stmt.Expression(expr);           
+        }
+
+        private Expr Assignment(){
+            Expr expr = Equality();
+
+            if( Match(TokenType.EQUAL) ){
+                Token equals = previous();
+                Expr values = Assignment();
+                if (expr is Expr.Variable ){
+                    
+                }
+            }
+
         }
 
         private Expr Equality()

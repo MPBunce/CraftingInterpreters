@@ -13,6 +13,7 @@ namespace GenerateAst
             String OutputDir = args[0];
             List<string> MyList = new List<string>
             {
+                "Assign   : Token name, Expr value",
                 "Binary   : Expr Left, Token Operation, Expr Right",
                 "Grouping : Expr Expression",
                 "Literal  : object Value",

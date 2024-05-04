@@ -55,13 +55,13 @@ namespace CraftingInterpreters.Lox
             List<Token> tokens = scanner.ScanTokens();
 
             Parser parser = new Parser(tokens);
-            Expr expression = parser.parse();
+            List<Stmt> statements = parser.parse();
 
             // Stop if there was a syntax error.
             if (hadError) return;
 
             //Console.WriteLine( new AstPrinter().print(expression) );
-            interpreter.interpret(expression);
+            interpreter.interpret(statements);
         }
 
         public static void Error(int line, string message)

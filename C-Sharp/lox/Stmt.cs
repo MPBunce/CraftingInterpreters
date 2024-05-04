@@ -32,7 +32,7 @@ namespace CraftingInterpreters.Lox {
       }
 
       public override R Accept<R>(IVisitor<R> visitor) {
-         return visitor.VisitPrintStmt(this);
+        return visitor.VisitPrintStmt(this);
       }
 
       public readonly Expr expression;

@@ -4,6 +4,7 @@ namespace CraftingInterpreters.Lox {
 
 
     public interface IVisitor<R> {
+      R VisitAssignExpr(Assign expr);
       R VisitBinaryExpr(Binary expr);
       R VisitGroupingExpr(Grouping expr);
       R VisitLiteralExpr(Literal expr);
@@ -12,6 +13,22 @@ namespace CraftingInterpreters.Lox {
 
     public abstract R Accept<R>(IVisitor<R> visitor);
 
+
+
+    public class Assign : Expr {
+      public Assign(Token name, Expr value) {
+        this.name = name;
+        this.value = value;
+      }
+
+      public override R Accept<R>(IVisitor<R> visitor) {
+         return visitor.VisitAssignExpr(this);
+      }
+
+      public readonly Token name;
+      public readonly Expr value;
+
+    }
 
 
     public class Binary : Expr {
