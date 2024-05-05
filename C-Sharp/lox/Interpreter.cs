@@ -2,7 +2,7 @@ namespace CraftingInterpreters.Lox {
 
     class Interpreter : Expr.IVisitor<Object>, Stmt.IVisitor<Object> {
 
-        private Environment environment = new Environment();
+        private CompilerEnvironment environment = new CompilerEnvironment();
 
         public Object VisitLiteralExpr(Expr.Literal expr) 
         {
@@ -87,7 +87,7 @@ namespace CraftingInterpreters.Lox {
 
         public Object VisitPrintStmt(Stmt.Print stmt){
             Object value = Evaluate(stmt.expression);
-            Console.WriteLine(stringify(value));
+            Console.WriteLine( stringify(value) );
             return null;
         }
 
@@ -113,7 +113,8 @@ namespace CraftingInterpreters.Lox {
         public void interpret(List<Stmt> statements){
             try {
                 foreach(Stmt statement in statements){
-                    Console.WriteLine(statement);
+                    //Console.WriteLine("statement" + statement);
+                    Execute(statement);
                 } 
             } catch (RuntimeError error){
                 Lox.RuntimeError(error);

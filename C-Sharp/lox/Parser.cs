@@ -61,7 +61,7 @@ namespace CraftingInterpreters.Lox{
             Token name = Consume(TokenType.IDENTIFIER, "Expect variable name.");
             Expr initializer = null;
             
-            if( Match(TokenType.SEMICOLON) ){
+            if( Match(TokenType.EQUAL) ){
                 initializer = Expression();
             }
             

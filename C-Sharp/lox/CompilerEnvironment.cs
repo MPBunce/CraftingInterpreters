@@ -1,7 +1,7 @@
 namespace CraftingInterpreters.Lox
 {
 
-    public class Environment 
+    public class CompilerEnvironment 
     {
 
         private readonly Dictionary<String,Object> values = new Dictionary<String,Object>(); 
@@ -29,6 +29,7 @@ namespace CraftingInterpreters.Lox
             throw new RuntimeError(name,"Undefined variable '" + name.Lexeme + "'.");
         }
 
+    
     }   
          
 }

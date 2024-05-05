@@ -1,9 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
+using System;
 
 namespace CraftingInterpreters.Lox
 {
     public class Lox
     {
+        
         private static readonly Interpreter interpreter = new Interpreter();
         static bool hadError = false;
         static bool hadRuntimeError = false;
