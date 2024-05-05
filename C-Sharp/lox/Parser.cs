@@ -48,7 +48,7 @@ namespace CraftingInterpreters.Lox{
                 return PrintStatement();
             }
             if( Match(TokenType.LEFT_BRACE) ){
-                return new Stmt.Block(block()):
+                return new Stmt.Block(Block());
             }
             return ExpressionStatement();
         }

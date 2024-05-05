@@ -110,8 +110,8 @@ namespace CraftingInterpreters.Lox {
             return value;
         }
 
-        public Object VisitBlockStmt(){
-            ExecuteBlock(stmt.statements, new Environment(environment));
+        public Object VisitBlockStmt(Stmt.Block stmt){
+            ExecuteBlock(stmt.statements, new CompilerEnvironment(environment) );
             return null;
         }
 
@@ -130,7 +130,7 @@ namespace CraftingInterpreters.Lox {
             stmt.Accept(this);
         }
 
-        private void ExecuteBlock(List<Stmt> statements, Environment environment)
+        private void ExecuteBlock(List<Stmt> statements, CompilerEnvironment environment)
         {
             CompilerEnvironment previous = this.environment;
             try
