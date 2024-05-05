@@ -5,6 +5,13 @@ namespace CraftingInterpreters.Lox
     {
 
         private readonly Dictionary<String,Object> values = new Dictionary<String,Object>(); 
+        readonly CompilerEnvironment Enclosing;
+        CompilerEnvironment Environment(){
+            Enclosing = null;
+        }
+        CompilerEnvironment Environment(CompilerEnvironment enclosing){
+            this.Enclosing = enclosing;
+        }
 
         public void Define(string name, Object value)
         {
@@ -17,6 +24,9 @@ namespace CraftingInterpreters.Lox
             {
                 return values[name.Lexeme];
             }
+            if( Enclosing != null){
+                return Enclosing.Get(name);
+            }
             throw new RuntimeError(name, "Undefined variable '" + name.Lexeme + "'.");
         }
 
@@ -25,6 +35,9 @@ namespace CraftingInterpreters.Lox
             {
                 values[name.Lexeme] = value;
                 return;
+            }
+            if( Enclosing != null){
+                return Enclosing.Assign(name, value);
             }
             throw new RuntimeError(name,"Undefined variable '" + name.Lexeme + "'.");
         }

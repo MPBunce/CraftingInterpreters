@@ -47,6 +47,9 @@ namespace CraftingInterpreters.Lox{
             if( Match(TokenType.PRINT) ){
                 return PrintStatement();
             }
+            if( Match(TokenType.LEFT_BRACE) ){
+                return new Stmt.Block(block()):
+            }
             return ExpressionStatement();
         }
 
@@ -74,6 +77,19 @@ namespace CraftingInterpreters.Lox{
             Expr expr = Expression();
             Consume(TokenType.SEMICOLON,  "Expect ';' after expression." );
             return new Stmt.Expression(expr);           
+        }
+
+        private List<Stmt> Block(){
+            List<Stmt> statements = new List<Stmt>();
+
+            while (!Check(TokenType.RIGHT_BRACE) && !isAtEnd())
+            {
+                statements.Add(Declaration());
+            }
+
+            Consume(TokenType.RIGHT_BRACE, "Expect '}' after block.");
+            return statements;
+
         }
 
         private Expr Assignment(){

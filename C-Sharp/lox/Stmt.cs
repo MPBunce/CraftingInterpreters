@@ -4,6 +4,7 @@ namespace CraftingInterpreters.Lox {
 
 
     public interface IVisitor<R> {
+      R VisitBlockStmt(Block stmt);
       R VisitExpressionStmt(Expression stmt);
       R VisitPrintStmt(Print stmt);
       R VisitVarStmt(Var stmt);
@@ -11,6 +12,20 @@ namespace CraftingInterpreters.Lox {
 
     public abstract R Accept<R>(IVisitor<R> visitor);
 
+
+
+    public class Block : Stmt {
+      public Block(List<Stmt> statements) {
+        this.statements = statements;
+      }
+
+      public override R Accept<R>(IVisitor<R> visitor) {
+         return visitor.VisitBlockStmt(this);
+      }
+
+      public readonly List<Stmt> statements;
+
+    }
 
 
     public class Expression : Stmt {

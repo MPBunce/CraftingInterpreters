@@ -110,6 +110,11 @@ namespace CraftingInterpreters.Lox {
             return value;
         }
 
+        public Object VisitBlockStmt(){
+            ExecuteBlock(stmt.statements, new Environment(environment));
+            return null;
+        }
+
         public void interpret(List<Stmt> statements){
             try {
                 foreach(Stmt statement in statements){
@@ -124,6 +129,25 @@ namespace CraftingInterpreters.Lox {
         private void Execute(Stmt stmt){
             stmt.Accept(this);
         }
+
+        private void ExecuteBlock(List<Stmt> statements, Environment environment)
+        {
+            CompilerEnvironment previous = this.environment;
+            try
+            {
+                this.environment = environment;
+
+                foreach (Stmt statement in statements)
+                {
+                    Execute(statement);
+                }
+            }
+            finally
+            {
+                this.environment = previous;
+            }
+        }
+
 
         private bool isTruthy(Object obj)
         {

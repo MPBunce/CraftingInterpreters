@@ -1,12 +1,41 @@
 // Note: This is just for the expression parsing chapter which prints the AST.
 //(5 - (3.9 - 1)) + -1
 // expect: (+ (group (- 5.0 (group (- 3.0 1.0)))) (- 1.0))
-
-print "one";
-print true;
-print 2 + 1;
-
-
+ 
+ 
 var a = 1;
-var b = 2;
-print a + b;
+print a;
+print a = 2; // "2".
+
+// How loud?
+var volume = 11;
+
+// Silence.
+volume = 0;
+
+// Calculate size of 3x4x5 cuboid.
+{
+  var volume = 3 * 4 * 5;
+  print volume;
+}
+
+
+var a = "global a";
+var b = "global b";
+var c = "global c";
+{
+  var a = "outer a";
+  var b = "outer b";
+  {
+    var a = "inner a";
+    print a;
+    print b;
+    print c;
+  }
+  print a;
+  print b;
+  print c;
+}
+print a;
+print b;
+print c;
