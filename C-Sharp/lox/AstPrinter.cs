@@ -57,6 +57,14 @@ namespace CraftingInterpreters.Lox {
             return builder.ToString();
         }
 
+        public string VisitAssignExpr(Expr.Assign assign){
+            return "null";
+        }
+
+        public string VisitVariableExpr(Expr.Variable variable){
+            return "null";
+        }
+
     }
 
 }
