@@ -2,6 +2,6 @@
 //(5 - (3.9 - 1)) + -1
 // expect: (+ (group (- 5.0 (group (- 3.0 1.0)))) (- 1.0))
 
-print "one";
-print true;
-print 2 + 1;
+var a = 1;
+var b = 2;
+print a + b;

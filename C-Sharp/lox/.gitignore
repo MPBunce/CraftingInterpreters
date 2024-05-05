@@ -17,3 +17,4 @@
 !Interpreter.cs
 !RuntimeError.cs
 !Stmt.cs
+!Environment.cs

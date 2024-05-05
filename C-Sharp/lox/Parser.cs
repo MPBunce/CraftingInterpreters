@@ -19,9 +19,23 @@ namespace CraftingInterpreters.Lox{
         public List<Stmt> parse() {
             List<Stmt> statements = new List<Stmt>();
             while( !isAtEnd() ){
-                statements.Add(Statement());
+                statements.Add( Declaration() );
             }
             return statements;
+        }
+
+        private Stmt Declaration()
+        {
+            try {
+                if( Match(TokenType.VAR) ){
+                    return VarDeclaration();
+                }
+                return Statement();
+            }
+            catch (ParseError error){
+                Synchronize();
+                return null;
+            }
         }
 
         private Expr Expression()
@@ -37,9 +51,23 @@ namespace CraftingInterpreters.Lox{
         }
 
         private Stmt PrintStatement(){
+        
             Expr value = Expression();
             Consume(TokenType.SEMICOLON,  "Expect ';' after expression." );
             return new Stmt.Print(value);
+        }
+
+        private Stmt VarDeclaration(){
+            Token name = Consume(TokenType.IDENTIFIER, "Expect variable name.");
+            Expr initializer = null;
+            
+            if( Match(TokenType.SEMICOLON) ){
+                initializer = Expression();
+            }
+            
+            Consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
+            return new Stmt.Var(name, initializer);
+
         }
 
         private Stmt ExpressionStatement(){
@@ -55,9 +83,15 @@ namespace CraftingInterpreters.Lox{
                 Token equals = previous();
                 Expr values = Assignment();
                 if (expr is Expr.Variable ){
-                    
+                    Token name = ((Expr.Variable)expr).name;
+                    return new Expr.Assign(name, values);
                 }
+
+                error(equals, "Invalid assignment target.");
+
             }
+
+            return expr;
 
         }
 
@@ -125,6 +159,11 @@ namespace CraftingInterpreters.Lox{
             {
                 return new Expr.Literal(previous().Literal);
             }
+
+            if (Match(TokenType.IDENTIFIER)) {
+                return new Expr.Variable(previous());
+            }
+
 
             if (Match(TokenType.LEFT_PAREN))
             {

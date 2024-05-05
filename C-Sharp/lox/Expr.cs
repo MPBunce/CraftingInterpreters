@@ -9,6 +9,7 @@ namespace CraftingInterpreters.Lox {
       R VisitGroupingExpr(Grouping expr);
       R VisitLiteralExpr(Literal expr);
       R VisitUnaryExpr(Unary expr);
+      R VisitVariableExpr(Variable expr);
     }
 
     public abstract R Accept<R>(IVisitor<R> visitor);
@@ -89,6 +90,20 @@ namespace CraftingInterpreters.Lox {
 
       public readonly Token Operation;
       public readonly Expr Right;
+
+    }
+
+
+    public class Variable : Expr {
+      public Variable(Token name) {
+        this.name = name;
+      }
+
+      public override R Accept<R>(IVisitor<R> visitor) {
+         return visitor.VisitVariableExpr(this);
+      }
+
+      public readonly Token name;
 
     }
 

@@ -17,7 +17,8 @@ namespace GenerateAst
                 "Binary   : Expr Left, Token Operation, Expr Right",
                 "Grouping : Expr Expression",
                 "Literal  : object Value",
-                "Unary    : Token Operation, Expr Right"
+                "Unary    : Token Operation, Expr Right",
+                "Variable : Token name"
             };
             DefineAst(OutputDir, "Expr", MyList);
 
@@ -25,7 +26,8 @@ namespace GenerateAst
             List<string> StmtList = new List<string>
             {
                 "Expression : Expr expression",
-                "Print      : Expr expression"
+                "Print      : Expr expression",
+                "Var        : Token name, Expr initializer",
             };
 
 

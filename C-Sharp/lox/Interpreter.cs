@@ -2,33 +2,12 @@ namespace CraftingInterpreters.Lox {
 
     class Interpreter : Expr.IVisitor<Object>, Stmt.IVisitor<Object> {
 
-        public void interpret(List<Stmt> statements){
-            try {
-                foreach(Stmt statement in statements){
-                    Console.WriteLine(statement);
-                } 
-            } catch (RuntimeError error){
-                Lox.RuntimeError(error);
-            }
-        }
-
-        public Object VisitExpressionStmt(Stmt.Expression stmt){
-            Evaluate(stmt.expression);
-            return null;
-        }
-
-        public Object VisitPrintStmt(Stmt.Print stmt){
-            Object value = Evaluate(stmt.expression);
-            Console.WriteLine(stringify(value));
-            return null;
-        }
+        private Environment environment = new Environment();
 
         public Object VisitLiteralExpr(Expr.Literal expr) 
         {
             return expr.Value;
         }
-
-        
 
         public Object VisitGroupingExpr(Expr.Grouping expr) 
         {
@@ -99,6 +78,46 @@ namespace CraftingInterpreters.Lox {
         private Object Evaluate(Expr expr) 
         {
             return expr.Accept(this);
+        }
+
+        public Object VisitExpressionStmt(Stmt.Expression stmt){
+            Evaluate(stmt.expression);
+            return null;
+        }
+
+        public Object VisitPrintStmt(Stmt.Print stmt){
+            Object value = Evaluate(stmt.expression);
+            Console.WriteLine(stringify(value));
+            return null;
+        }
+
+        public Object VisitVarStmt(Stmt.Var stmt){
+            Object value = null;
+            if(stmt.initializer != null){
+                value = Evaluate(stmt.initializer);
+            }
+            environment.Define(stmt.name.Lexeme, value);
+            return null;
+        }
+
+        public Object VisitVariableExpr( Expr.Variable expr){
+            return environment.Get(expr.name);
+        }
+        
+        public Object VisitAssignExpr(Expr.Assign expr){
+            Object value = Evaluate(expr.value);
+            environment.Assign(expr.name, value);
+            return value;
+        }
+
+        public void interpret(List<Stmt> statements){
+            try {
+                foreach(Stmt statement in statements){
+                    Console.WriteLine(statement);
+                } 
+            } catch (RuntimeError error){
+                Lox.RuntimeError(error);
+            }
         }
         
         private void Execute(Stmt stmt){
