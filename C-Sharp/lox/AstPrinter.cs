@@ -65,6 +65,10 @@ namespace CraftingInterpreters.Lox {
             return "null";
         }
 
+        public string VisitLogicalExpr(Expr.Logical variable){
+            return "null";
+        }
+
     }
 
 }

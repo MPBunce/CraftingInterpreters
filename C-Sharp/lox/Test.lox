@@ -3,39 +3,23 @@
 // expect: (+ (group (- 5.0 (group (- 3.0 1.0)))) (- 1.0))
  
  
-var a = 1;
-print a;
-print a = 2; // "2".
-
-// How loud?
-var volume = 11;
-
-// Silence.
-volume = 0;
-
-// Calculate size of 3x4x5 cuboid.
-{
-  var volume = 3 * 4 * 5;
-  print volume;
-}
+print "hi" or 2; // "hi".
+print nil or "yes"; // "yes".
 
 
-var a = "global a";
-var b = "global b";
-var c = "global c";
-{
-  var a = "outer a";
-  var b = "outer b";
-  {
-    var a = "inner a";
-    print a;
-    print b;
-    print c;
-  }
+var a = 0;
+var temp;
+
+for (var b = 1; a < 100; b = temp + b) {
   print a;
-  print b;
-  print c;
+  temp = a;
+  a = b;
 }
-print a;
-print b;
-print c;
+
+{
+  var i = 0;
+  while (i < 10) {
+    print i;
+    i = i + 1;
+  }
+}

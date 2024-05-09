@@ -8,6 +8,7 @@ namespace CraftingInterpreters.Lox {
       R VisitBinaryExpr(Binary expr);
       R VisitGroupingExpr(Grouping expr);
       R VisitLiteralExpr(Literal expr);
+      R VisitLogicalExpr(Logical expr);
       R VisitUnaryExpr(Unary expr);
       R VisitVariableExpr(Variable expr);
     }
@@ -74,6 +75,24 @@ namespace CraftingInterpreters.Lox {
       }
 
       public readonly object Value;
+
+    }
+
+
+    public class Logical : Expr {
+      public Logical(Expr left, Token Operation, Expr right) {
+        this.left = left;
+        this.Operation = Operation;
+        this.right = right;
+      }
+
+      public override R Accept<R>(IVisitor<R> visitor) {
+         return visitor.VisitLogicalExpr(this);
+      }
+
+      public readonly Expr left;
+      public readonly Token Operation;
+      public readonly Expr right;
 
     }
 

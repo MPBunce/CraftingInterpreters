@@ -17,6 +17,7 @@ namespace GenerateAst
                 "Binary   : Expr Left, Token Operation, Expr Right",
                 "Grouping : Expr Expression",
                 "Literal  : object Value",
+                "Logical  : Expr left, Token Operation, Expr right",
                 "Unary    : Token Operation, Expr Right",
                 "Variable : Token name"
             };
@@ -27,8 +28,10 @@ namespace GenerateAst
             {
                 "Block      : List<Stmt> statements",
                 "Expression : Expr expression",
+                "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
                 "Print      : Expr expression",
                 "Var        : Token name, Expr initializer",
+                "While      : Expr condition, Stmt body"
             };
 
 

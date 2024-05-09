@@ -14,6 +14,18 @@ namespace CraftingInterpreters.Lox {
             return Evaluate(expr.Expression);
         }
 
+        public Object VisitLogicalExpr(Expr.Logical expr){
+            Object left = Evaluate(expr.left);
+            
+            if( expr.Operation.Type == TokenType.OR){
+                if( isTruthy(left) ) return left;
+            } else{
+                if( !isTruthy(left) ) return left;
+            }
+
+            return Evaluate(expr.right);
+        }
+
         public Object VisitUnaryExpr(Expr.Unary expr) 
         {
             Object right = Evaluate(expr.Right);
@@ -88,6 +100,25 @@ namespace CraftingInterpreters.Lox {
         public Object VisitPrintStmt(Stmt.Print stmt){
             Object value = Evaluate(stmt.expression);
             Console.WriteLine( stringify(value) );
+            return null;
+        }
+
+        public Object VisitIfStmt(Stmt.If stmt){
+            if( isTruthy( Evaluate(stmt.condition)) ){
+                Execute(stmt.thenBranch);
+            } else if ( stmt.elseBranch != null){
+                Execute(stmt.elseBranch);
+            } else {
+                return null;
+            }
+
+            return null;
+        }
+
+        public Object VisitWhileStmt(Stmt.While stmt){
+            while (isTruthy(Evaluate(stmt.condition))) {
+                Execute(stmt.body);
+            }
             return null;
         }
 
