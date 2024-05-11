@@ -3,22 +3,17 @@ pub enum OpCode {
 }
 
 pub struct Chunk {
-    count: i32,
-    capacity: i32,
-    code: Option<*mut u8>,
+    code: Vec<u8>,
 }
 
 impl Chunk {
     pub fn init_chunk() -> Self{
-        return Chunk {count: 0, capacity: 0, code: None}
+        return Chunk {code: Vec::new()}
     }
-    pub fn free_chunk(&mut self){
-        return;
+    pub fn write_chunk(&mut self, byte: u8) {
+        self.code.push(byte);
     }
-    pub fn write_chunk(&mut self, byte: u8){
-        if self.capacity < self.count + 1 {
-            let old_capacity = self.capacity;
-
-        }
+    pub fn disassemble_chunk(){
+        
     }
 }

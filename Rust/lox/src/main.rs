@@ -11,8 +11,8 @@ fn main() {
 
     println!("Compiling....\n");
     let mut chunk = Chunk::init_chunk();
-    // chunk.write_chunk(OpCode::OpReturn);
-    // chunk.free_chunk();
+    chunk.write_chunk(OpCode::OpReturn as u8);
+    chunk.disassemble_chunk("Test chunk")
 
     return;
 }
