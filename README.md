@@ -1,7 +1,7 @@
 # CraftingInterpreters
 
 
-Following along the Crafting Interpreters book to develop a Lox Compiler, but instead of using Java I opted to use C#.
+Following along the Crafting Interpreters book to develop a Lox Compiler.
 
 
 Book: https://craftinginterpreters.com/contents.html
