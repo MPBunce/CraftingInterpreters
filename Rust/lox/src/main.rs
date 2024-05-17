@@ -6,12 +6,11 @@ mod token;
 mod token_type;
 
 use std::env;
-use std::io::{ self, BufRead};
+use std::io::{ self, BufRead, BufReader, Write, stdout};
 
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    println!("{}", &args[1]);
     if args.len() > 2 {
         println!("Usage: lox-ast script");
         std::process::exit(64);
@@ -38,6 +37,7 @@ fn run_file(filename: &str)-> io::Result<()> {
 fn run_prompt(){
     let stdin = io::stdin();
     print!("> ");
+    stdout().flush();
     for line in stdin.lock().lines(){
         if let Ok(line) = line {
             if line.is_empty(){
@@ -53,6 +53,8 @@ fn run_prompt(){
         }else {
             break
         }
+        print!("> ");
+        stdout().flush();
     }
 }
 
@@ -61,7 +63,7 @@ fn run(source: String)-> Result<(), LoxError>{
     let tokens = scanner.scan_tokens();
     
     for token in tokens {
-        println!("{:?}", token);
+        println!("{:?}\n", token);
     }
     Ok(())
 }
