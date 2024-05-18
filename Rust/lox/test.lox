@@ -1,5 +1,12 @@
-test
+test_words
 
-
-
-test
+// this is a comment
+(( )){} // grouping stuff
+!*+-/=<> <= == // operators
+"test"
+123.42
+this
+and
+or
+TestWord
+test_words

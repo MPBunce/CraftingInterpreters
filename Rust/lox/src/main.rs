@@ -6,7 +6,7 @@ mod token;
 mod token_type;
 
 use std::env;
-use std::io::{ self, BufRead, BufReader, Write, stdout};
+use std::io::{ self, BufRead, Write, stdout};
 
 
 fn main() {
@@ -26,8 +26,8 @@ fn run_file(filename: &str)-> io::Result<()> {
     let buf = std::fs::read_to_string(filename)?;
     match run(buf){
         Ok(_) => {},
-        Err(m) => {
-            m.report( "".to_string());
+        Err(_) => {
+            //m.report( "".to_string());
             std::process::exit(65);
         }
     }
@@ -37,7 +37,7 @@ fn run_file(filename: &str)-> io::Result<()> {
 fn run_prompt(){
     let stdin = io::stdin();
     print!("> ");
-    stdout().flush();
+    let _ = stdout().flush();
     for line in stdin.lock().lines(){
         if let Ok(line) = line {
             if line.is_empty(){
@@ -45,8 +45,8 @@ fn run_prompt(){
             } 
             match run(line) {
                 Ok(_) => {}
-                Err(e) => {
-                    e.report("".to_string());
+                Err(_) => {
+                    //Ignore
                 }
             }
 
@@ -54,16 +54,17 @@ fn run_prompt(){
             break
         }
         print!("> ");
-        stdout().flush();
+        let _ = stdout().flush();
     }
 }
 
 fn run(source: String)-> Result<(), LoxError>{
+    println!("Running...");
     let mut scanner = Scanner::new(source);
-    let tokens = scanner.scan_tokens();
-    
+    let tokens = scanner.scan_tokens()?;
+    println!("Done Scanning...");
     for token in tokens {
-        println!("{:?}\n", token);
+        println!("{:?}", token);
     }
     Ok(())
 }

@@ -48,7 +48,7 @@ impl Token {
 
 impl fmt::Display for Token {
     fn fmt(&self, f: &mut fmt::Formatter ) -> fmt::Result{
-        write!(f, "{:?} {} {}",
+        write!(f, "{:?} {} {} \n",
             self.token_type, self.lexeme,
             if let Some(literal) = &self.literal {
                 literal.to_string()
