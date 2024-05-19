@@ -12,18 +12,18 @@ struct TreeType {
 
 fn main() -> io::Result<()> {
 
-    let args: Vec<String> = args().collect();
-    if args.len() != 2 {
-        println!("Usage: lox-ast script needs output directory");
-        std::process::exit(64);
-    }
+    // let args: Vec<String> = args().collect();
+    // if args.len() != 2 {
+    //     println!("Usage: lox-ast script needs output directory");
+    //     std::process::exit(64);
+    // }
 
-    let output_dir = args.get(1).unwrap();
+    let output_dir = &"/home/matthew/Programming/CraftingInterpreters/Rust/lox/src".to_string();
 
     let ast = vec![
         "Binary   : Box<Expr> left, Token operator, Box<Expr> right".to_string(),
         "Grouping : Box<Expr> expression".to_string(),
-        "Literal  : Object value".to_string(),
+        "Literal  : Option<Object> value".to_string(),
         "Unary    : Token operator, Box<Expr> right".to_string()
     ];
 
@@ -52,18 +52,61 @@ fn define_ast(output_dir: &String, base_name: &String, types:  Vec<String>) -> i
 
         tree_types.push(
             TreeType {
-                base_class_name: base_class_name.to_string(),
+                base_class_name: base_class_name.trim().to_string(),
                 class_name,
                 fields
             }
         );
     }
 
+    //Enum
     write!(file, "pub enum {base_name} {{ \n")?;
     for t in &tree_types {
         write!(file, "    {}({}),\n", t.base_class_name, t.class_name)?;
     }
     write!(file, "}}\n\n")?;
+
+    //Impl Expr
+    write!(file, "impl {} {{\n", base_name)?;
+    write!(file, "    pub fn accept<T>(&self, {}_visitor: &dyn {base_name}Visitor<T>) -> Result<T, LoxError>{{\n", base_name.to_lowercase())?;
+    write!(file, "        match self {{\n")?;
+
+    for n in &tree_types {
+        write!(file, "            {base_name}::{}(v) => v.accept({}_visitor),\n", n.base_class_name, base_name.to_lowercase())?;
+    }
+
+    write!(file, "        }}\n")?;
+    write!(file, "    }}\n")?;
+    write!(file, "}}\n\n")?;
+
+    for t in &tree_types {
+        write!(file, "pub struct {} {{\n", t.class_name)?;
+        for f in &t.fields {
+            write!(file, "     pub {},\n", f)?;
+        }
+        write!(file, "}}\n\n")?;
+    }
+
+    write!(file, "pub trait ExprVisitor<T> {{\n")?;
+    for t in &tree_types {
+        write!(
+            file,
+            "    fn visit_{}_{}(&self, expr: &{}) -> Result<T, LoxError>;",
+            t.base_class_name.to_lowercase(),
+            base_name.to_lowercase(),
+            t.class_name
+        )?;
+        write!(file, "\n")?;
+    }
+    write!(file, "}}\n\n")?;
+
+    for t in &tree_types {
+        write!(file, "impl {} {{\n", t.class_name)?;
+        write!(file, "    pub fn accept<T>(&self, visitor: &dyn {}Visitor<T>) -> Result<T, LoxError> {{\n", base_name)?;
+        write!(file, "        visitor.visit_{}_{}(self)\n", t.base_class_name.to_lowercase(), base_name.to_lowercase() )?;
+        write!(file, "    }}\n")?;
+        write!(file, "}}\n\n")?;
+    }
 
     Ok(())
 }

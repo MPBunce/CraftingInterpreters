@@ -3,10 +3,10 @@ use crate::token_type::*;
 
 #[derive(Debug)]
 pub struct Token {
-    token_type: TokenType,
-    lexeme: String,
-    literal: Option<Object>,
-    line: usize
+    pub token_type: TokenType,
+    pub lexeme: String,
+    pub literal: Option<Object>,
+    pub line: usize
 }
 
 #[derive(Debug)]

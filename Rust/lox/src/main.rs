@@ -4,10 +4,55 @@ mod scanner;
 use scanner::*;
 mod token;
 mod token_type;
+use token_type::*;
+mod ast_printer;
+use ast_printer::*;
+mod expr;
+mod parser;
+
+use expr::*;
+
+
 
 use std::env;
 use std::io::{ self, BufRead, Write, stdout};
+use crate::expr::{BinaryExpr, Expr, GroupingExpr, LiteralExpr, UnaryExpr};
+use crate::token::Token;
+use crate::token_type::TokenType;
 
+// fn main(){
+//     let expression = Expr::Binary(
+//         BinaryExpr {
+//             left: Box::new( Expr::Unary(
+//                 UnaryExpr {
+//                     operator: Token {
+//                         token_type: TokenType::Minus,
+//                         lexeme: "-".to_string(),
+//                         literal: None,
+//                         line: 1
+//                     },
+//                     right: Box::new(Expr::Literal( LiteralExpr { value: Some(token::Object::Num( f64::from(123) )) }))
+//
+//                 }
+//             )),
+//             operator: Token {
+//                 token_type: TokenType::Star,
+//                 lexeme: "*".to_string(),
+//                 literal: None,
+//                 line: 1
+//             },
+//             right: Box::new( Expr::Grouping(
+//                 GroupingExpr {
+//                     expression: Box::new(Expr::Literal( LiteralExpr {value: Some(token::Object::Num(45.67))} ))
+//                 }
+//             ))
+//         }
+//     );
+//
+//     let printer = AstPrinter {};
+//     println!("{:?}", printer.print(&expression).unwrap() )
+//
+// }
 
 fn main() {
     let args: Vec<String> = env::args().collect();
