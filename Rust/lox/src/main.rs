@@ -20,6 +20,7 @@ use crate::expr::{BinaryExpr, Expr, GroupingExpr, LiteralExpr, UnaryExpr};
 use crate::token::Token;
 use crate::token_type::TokenType;
 
+//For testing AST Printer
 // fn main(){
 //     let expression = Expr::Binary(
 //         BinaryExpr {
