@@ -9,6 +9,7 @@ mod ast_printer;
 use ast_printer::*;
 mod expr;
 mod parser;
+use parser::*;
 
 use expr::*;
 
@@ -109,10 +110,17 @@ fn run(source: String)-> Result<(), LoxError>{
     println!("Running...");
     let mut scanner = Scanner::new(source);
     let tokens = scanner.scan_tokens()?;
-    println!("Done Scanning...");
-    for token in tokens {
-        println!("{:?}", token);
-    }
+    // println!("Done Scanning...");
+    // for token in tokens {
+    //     println!("{:?}", token);
+    // }
+
+    let t: Vec<Token> = tokens.iter().cloned().collect();
+    let mut parser = Parser::new(t);
+    let expr = parser.start_parse().unwrap();
+    let printer = AstPrinter {};
+    println!("{:?}", printer.print(&expr).unwrap() );
+
     Ok(())
 }
 

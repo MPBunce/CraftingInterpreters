@@ -1,7 +1,7 @@
 use std::fmt;
 use crate::token_type::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, )]
 pub struct Token {
     pub token_type: TokenType,
     pub lexeme: String,
@@ -9,7 +9,7 @@ pub struct Token {
     pub line: usize
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Object {
     Num(f64),
     Str(String),
