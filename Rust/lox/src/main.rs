@@ -9,6 +9,8 @@ mod ast_printer;
 use ast_printer::*;
 mod expr;
 mod parser;
+mod interpreter;
+
 use parser::*;
 
 use expr::*;
