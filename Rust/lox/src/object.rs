@@ -1,12 +1,13 @@
 use std::fmt;
+use std::ops::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Object {
     Num(f64),
     Str(String),
+    Bool(bool),
     Nil,
-    True,
-    False
+    ArithmeticError
 }
 
 impl fmt::Display for Object {
@@ -14,10 +15,27 @@ impl fmt::Display for Object {
         match self {
             Object::Num(x) => write!(f, "{x}"),
             Object::Str(x) => write!(f, "{x}"),
+            Object::Bool(x) => {
+                if *x {
+                    write!(f, "true")
+                } else {
+                    write!(f, "false")
+                }
+            }
             Object::Nil => write!(f, "nil"),
-            Object::True => write!(f, "True"),
-            Object::False => write!(f, "False")
+            Object::ArithmeticError => panic!("Shouldn't be printing this???")
         }
     }
+}
 
+impl Sub for Object {
+    type Output = Object;
+    fn sub(self, other: Self) -> Object {
+        match(self, other){
+            (Object::Num(left), Object::Num(right)) => {
+                Object::Num(left - right)
+            }
+            _ => Object::ArithmeticError
+        }
+    }
 }

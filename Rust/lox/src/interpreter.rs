@@ -68,9 +68,9 @@ impl ExprVisitor<Object> for Interpreter {
             }
             TokenType::Bang => {
                 if self.is_truthy(right) {
-                    Ok(Object::False)
+                    Ok(Object::Bool(false))
                 } else {
-                    Ok(Object::True)
+                    Ok(Object::Bool(true))
                 }
             }
             _ => {
@@ -88,6 +88,6 @@ impl Interpreter {
     }
 
     pub fn is_truthy(&self, obj: Object) -> bool {
-        !matches!(obj, Object::Nil | Object::False)
+        !matches!(obj, Object::Nil | Object::Bool(false))
     }
 }
