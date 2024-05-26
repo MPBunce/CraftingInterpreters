@@ -1,13 +1,51 @@
 use crate::error::LoxError;
 use crate::expr::*;
-use crate::token::*;
+use crate::object::*;
 use crate::token_type::TokenType;
 
 pub struct Interpreter;
 
 impl ExprVisitor<Object> for Interpreter {
     fn visit_binary_expr(&self, expr: &BinaryExpr) -> Result<Object, LoxError> {
-
+        let left = self.evaluate(&expr.left).unwrap();
+        let right =self.evaluate(&expr.right).unwrap();
+        match expr.operator.token_type {
+            TokenType::Minus => {
+                if let Object::Num(left) = left {
+                    if let Object::Num(right) = right {
+                        return  Ok( Object::Num(left - right) )
+                    }
+                }
+                return Err(LoxError::error(expr.operator.line, "Error Binary Exp" ))
+            }
+            TokenType::Slash => {
+                if let Object::Num(left) = left {
+                    if let Object::Num(right) = right {
+                        return  Ok( Object::Num(left / right) )
+                    }
+                }
+                return Err(LoxError::error(expr.operator.line, "Error Binary Exp" ))
+            }
+            TokenType::Star => {
+                if let Object::Num(left) = left {
+                    if let Object::Num(right) = right {
+                        return  Ok( Object::Num(left * right) )
+                    }
+                }
+                return Err(LoxError::error(expr.operator.line, "Error Binary Exp" ))
+            }
+            TokenType::Plus => {
+                if let Object::Num(left) = left {
+                    if let Object::Num(right) = right {
+                        return  Ok( Object::Num(left + right) )
+                    }
+                }
+                return Err(LoxError::error(expr.operator.line, "Error Binary Exp"))
+            }
+            _ => {
+                return Err( LoxError::error(expr.operator.line, "Error Binary Exp" ) )
+            }
+        }
     }
 
     fn visit_grouping_expr(&self, expr: &GroupingExpr) -> Result<Object, LoxError> {
@@ -23,10 +61,17 @@ impl ExprVisitor<Object> for Interpreter {
         let right = self.evaluate(&expr.right).unwrap();
         match expr.operator.token_type {
             TokenType::Minus => {
-                return Ok(-right)
+                if let Object::Num(right) = right {
+                    return Ok( Object::Num( - right) )
+                }
+                return Err( LoxError::error(expr.operator.line, "Error Binary Exp" ) )
             }
             TokenType::Bang => {
-                return !self.is_truthy(right)
+                if self.is_truthy(right) {
+                    Ok(Object::False)
+                } else {
+                    Ok(Object::True)
+                }
             }
             _ => {
                 return Ok(Object::Nil)
@@ -42,7 +87,7 @@ impl Interpreter {
             expr.accept(self)
     }
 
-    pub fn is_truthy(&self, obj: Object) -> Result<Object, LoxError>{
-
+    pub fn is_truthy(&self, obj: Object) -> bool {
+        !matches!(obj, Object::Nil | Object::False)
     }
 }

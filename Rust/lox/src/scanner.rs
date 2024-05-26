@@ -2,6 +2,7 @@ use crate::token::*;
 use crate::error::*;
 use crate::token_type::TokenType;
 use std::collections::HashMap;
+use crate::object::*;
 
 pub struct Scanner {
     source: Vec<char>,
@@ -49,7 +50,7 @@ impl Scanner {
             match self.scan_token(){
                 Ok(_) => {}
                 Err(e) => {
-                    e.report("".to_string());
+                    e.report("");
                     had_error = Some(e);
                 }
             }
@@ -149,7 +150,7 @@ impl Scanner {
                     self.identifier()
                 } else {
                     return Err(
-                        LoxError::error(self.line, "Unexpected Char".to_string() )
+                        LoxError::error(self.line, "Unexpected Char")
                     )
                 }
             }
@@ -205,7 +206,7 @@ impl Scanner {
         }
 
         if self.is_at_end() {
-            return Err( LoxError::error(self.line, "Unterminated String".to_string()) );
+            return Err( LoxError::error(self.line, "Unterminated String") );
         }
         self.advance();
 

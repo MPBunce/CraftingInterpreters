@@ -2,7 +2,7 @@ use crate::error::LoxError;
 use crate::token::*;
 use crate::expr::*;
 use crate::token_type::*;
-
+use crate::object::*;
 
 pub struct Parser {
     tokens: Vec<Token>,
@@ -151,7 +151,7 @@ impl Parser {
 
 
         //Will never reach this
-        return Err( LoxError::error( 1 , "Error in parser primary function".to_string()) );
+        return Err( LoxError::error( 1 , "Error in parser primary function" ) );
     }
 
     fn consume(&mut self, token_types: TokenType, s: String) -> Result<Token, LoxError> {
@@ -159,7 +159,7 @@ impl Parser {
             return Ok( self.advance() )
         }else{
             let t = self.peek();
-            return Err( LoxError::token_error(t,s) );
+            return Err( LoxError::parse_error(&t, &s) );
         }
     }
 

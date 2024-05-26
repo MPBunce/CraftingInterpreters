@@ -10,6 +10,7 @@ use ast_printer::*;
 mod expr;
 mod parser;
 mod interpreter;
+mod object;
 
 use parser::*;
 
