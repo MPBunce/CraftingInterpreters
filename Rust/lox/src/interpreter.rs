@@ -9,43 +9,28 @@ impl ExprVisitor<Object> for Interpreter {
     fn visit_binary_expr(&self, expr: &BinaryExpr) -> Result<Object, LoxError> {
         let left = self.evaluate(&expr.left).unwrap();
         let right =self.evaluate(&expr.right).unwrap();
-        match expr.operator.token_type {
-            TokenType::Minus => {
-                if let Object::Num(left) = left {
-                    if let Object::Num(right) = right {
-                        return  Ok( Object::Num(left - right) )
-                    }
-                }
-                return Err(LoxError::error(expr.operator.line, "Error Binary Exp" ))
-            }
-            TokenType::Slash => {
-                if let Object::Num(left) = left {
-                    if let Object::Num(right) = right {
-                        return  Ok( Object::Num(left / right) )
-                    }
-                }
-                return Err(LoxError::error(expr.operator.line, "Error Binary Exp" ))
-            }
-            TokenType::Star => {
-                if let Object::Num(left) = left {
-                    if let Object::Num(right) = right {
-                        return  Ok( Object::Num(left * right) )
-                    }
-                }
-                return Err(LoxError::error(expr.operator.line, "Error Binary Exp" ))
-            }
-            TokenType::Plus => {
-                if let Object::Num(left) = left {
-                    if let Object::Num(right) = right {
-                        return  Ok( Object::Num(left + right) )
-                    }
-                }
-                return Err(LoxError::error(expr.operator.line, "Error Binary Exp"))
-            }
+
+        let res = match expr.operator.token_type {
+            TokenType::Minus => left - right,
+            TokenType::Slash => left / right,
+            TokenType::Star => left * right,
+            TokenType::Greater => Object::Bool(left > right),
+            TokenType::GreaterEqual => Object::Bool(left >= right),
+            TokenType::Less => Object::Bool(left < right),
+            TokenType::LessEqual => Object::Bool(left <= right),
+            TokenType::BangEqual => Object::Bool( left != right ),
+            TokenType::EqualEqual => Object::Bool( left == right ),
             _ => {
-                return Err( LoxError::error(expr.operator.line, "Error Binary Exp" ) )
+                Object::ArithmeticError
             }
+        };
+
+        if res == Object::ArithmeticError {
+            Err( LoxError::error(expr.operator.line, "Bad Expression") )
+        } else {
+            Ok(res)
         }
+
     }
 
     fn visit_grouping_expr(&self, expr: &GroupingExpr) -> Result<Object, LoxError> {
