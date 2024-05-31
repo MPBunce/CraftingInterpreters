@@ -10,8 +10,11 @@ impl ExprVisitor<Object> for Interpreter {
         let left = self.evaluate(&expr.left).unwrap();
         let right =self.evaluate(&expr.right).unwrap();
 
+        //println!("left {:?}, expr: {:?}, right: {:?}", &left, &expr.operator.token_type, &right);
+
         let res = match expr.operator.token_type {
             TokenType::Minus => left - right,
+            TokenType::Plus => left + right,
             TokenType::Slash => left / right,
             TokenType::Star => left * right,
             TokenType::Greater => Object::Bool(left > right),
@@ -21,12 +24,14 @@ impl ExprVisitor<Object> for Interpreter {
             TokenType::BangEqual => Object::Bool( left != right ),
             TokenType::EqualEqual => Object::Bool( left == right ),
             _ => {
-                Object::ArithmeticError
+                todo!("Add case");
             }
         };
 
+        //println!("res:  {:?}", &res);
+
         if res == Object::ArithmeticError {
-            Err( LoxError::error(expr.operator.line, "Bad Expression") )
+            Err( LoxError::runtime_error(&expr.operator, "Bad Expression") )
         } else {
             Ok(res)
         }
@@ -75,4 +80,18 @@ impl Interpreter {
     pub fn is_truthy(&self, obj: Object) -> bool {
         !matches!(obj, Object::Nil | Object::Bool(false))
     }
+
+    pub fn interpret(&self, expr: &Expr) -> bool {
+        match self.evaluate(&expr){
+            Ok(v) => {
+                println!("{}", v);
+                true
+            },
+            Err(e) => {
+                e.report("");
+                false
+            }
+        }
+    }
+
 }

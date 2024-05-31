@@ -17,13 +17,13 @@ impl Parser {
            }
     }
 
-    pub fn start_parse(&mut self)-> Result<Expr, LoxError>{
+    pub fn parse(&mut self)-> Result<Expr, LoxError>{
         match self.expression() {
             Ok(r) => {
                 return Ok(r)
             }
-            r => {
-                return r
+            Err(e) => {
+                return Err(LoxError::error( 1 , "Error in parser primary function"))
             }
         }
     }
