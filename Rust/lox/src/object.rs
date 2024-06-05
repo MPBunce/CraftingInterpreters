@@ -46,7 +46,12 @@ impl Div for Object {
     fn div(self, other: Self) -> Object {
         match(self, other){
             (Object::Num(left), Object::Num(right)) => {
-                Object::Num(left / right)
+                if right == 0.0 {
+                    Object::ArithmeticError
+                } else {
+                    Object::Num(left / right)
+                }
+
             }
             _ => Object::ArithmeticError
         }
@@ -74,6 +79,12 @@ impl Add for Object {
             },
             (Object::Str(left), Object::Str(right)) => {
                 Object::Str( format!("{}{}", left, right) )
+            },
+            (Object::Str(left), Object::Num(right)) => {
+                Object::Str( format!("{}{}", left, right.to_string()) )
+            },
+            (Object::Num(left), Object::Str(right)) => {
+                Object::Str( format!("{}{}", left.to_string(), right) )
             }
             _ => Object::ArithmeticError
         }
